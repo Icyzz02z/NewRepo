@@ -1,0 +1,168 @@
+/*
+CREATE And READ
+MUSIc PLAYER SySTEM
+ADD MUSIC to PLAYLIST
+NAME, DURATION, GENRE ARTIST
+DISPLAY STRIPPED LIST
+
+(SEconds) namE - DURATION
+T : XXXX D : XX: XX:XX
+CHECK FULL DATA
+*/
+#include <iostream>
+#include <iomanip>  // For setw() and setfill()
+using namespace std;
+
+// Structure for a song node
+struct Song {
+    string name, genre, artist;
+    int duration;
+    Song* next;
+};
+
+// Class for the linked list queue
+class MusicQueue {
+private:
+    Song* head; // First element (head)
+    Song* tail; // Last element (tail)
+
+public:
+    // Constructor
+    MusicQueue() {
+        head = tail = nullptr;
+    }
+
+    // Function to add a song to the queue
+    void enqueue(string name, string genre, string artist, int duration) {
+        Song* newSong = new Song();
+        newSong->name = name;
+        newSong->genre = genre;
+        newSong->artist = artist;
+        newSong->duration = duration;
+        newSong->next = nullptr;
+
+        if (tail == nullptr) { // If queue is empty
+            head = tail = newSong;
+        }
+        else {
+            tail->next = newSong;
+            tail = newSong;
+        }
+    }
+
+    // Function to display duration in "MM:SS" format (without using to_string)
+    void formatDuration(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        cout << minutes << ":" << setw(2) << setfill('0') << remainingSeconds;
+    }
+
+    // Function to display all songs (Short format) & ask to view details
+    void displaySongs() {
+        Song* temp = head;
+        int index = 1;
+
+        if (temp == nullptr) {
+            cout << "No songs in the playlist.\n";
+            return;
+        }
+
+        cout << "\n=== Playlist (Short Display) ===\n";
+        while (temp != nullptr) {
+            cout << index << ". " << temp->name << " - D: ";
+            formatDuration(temp->duration);
+            cout << endl;
+            temp = temp->next;
+            index++;
+        }
+
+        // Ask user if they want to view a song's full details
+        int songChoice;
+        cout << "Enter the number of the song to view details (or 0 to go back): ";
+        cin >> songChoice;
+
+        if (songChoice > 0 && songChoice < index) {
+            displayFull(songChoice);
+        }
+        else {
+            cout << "Returning to menu...\n";
+        }
+    }
+
+    // Function to display full details of a specific song
+    void displayFull(int choice) {
+        Song* temp = head;
+        int index = 1;
+
+        while (temp != nullptr) {
+            if (index == choice) {
+                cout << "\n=== Song Details ===\n";
+                cout << "Name: " << temp->name << endl;
+                cout << "Genre: " << temp->genre << endl;
+                cout << "Artist: " << temp->artist << endl;
+                cout << "Duration: " << temp->duration << " sec (";
+                formatDuration(temp->duration);
+                cout << ")" << endl;
+                cout << "-------------------------" << endl;
+                return;
+            }
+            temp = temp->next;
+            index++;
+        }
+
+        cout << "Invalid choice! Returning to menu...\n";
+    }
+
+    // Destructor to free memory
+    ~MusicQueue() {
+        while (head != nullptr) {
+            Song* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+
+// Main function with Menu
+int main() {
+    MusicQueue playlist;
+    int choice;
+
+    do {
+        cout << "\n===== MUSIC PLAYER MENU =====\n";
+        cout << "1. Add a Song\n";
+        cout << "2. View All Songs & Select One\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            string name, genre, artist;
+            int duration;
+
+            cout << "Enter the name of the song (use _ instead of spaces): ";
+            cin >> name;
+            cout << "Enter the genre of the song: ";
+            cin >> genre;
+            cout << "Enter the artist of the song: ";
+            cin >> artist;
+            cout << "Enter the duration of the song (in seconds): ";
+            cin >> duration;
+
+            playlist.enqueue(name, genre, artist, duration);
+            cout << "Song added successfully!\n";
+        }
+        else if (choice == 2) {
+            playlist.displaySongs();
+        }
+        else if (choice == 3) {
+            cout << "Exiting music player. Goodbye!\n";
+        }
+        else {
+            cout << "Invalid choice! Please try again.\n";
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
