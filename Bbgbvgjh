@@ -15,8 +15,9 @@ void inputItems(GroceryItem items[]) {
         cout << "\nItem " << i + 1 << ":\n";
         cout << "Code: ";
         cin >> items[i].code;
+        cin.ignore(); // clear newline before using getline
         cout << "Description: ";
-        cin >> items[i].description;
+        getline(cin, items[i].description);
         cout << "Price: ";
         cin >> items[i].price;
         cout << "Quantity: ";
@@ -27,9 +28,9 @@ void inputItems(GroceryItem items[]) {
 void showItems(GroceryItem items[]) {
     cout << "\nItems Entered:\n";
     for (int i = 0; i < MAX_ITEMS; i++) {
-        cout << items[i].code << " "
-             << items[i].description << " "
-             << items[i].price << " "
+        cout << items[i].code << " | "
+             << items[i].description << " | "
+             << items[i].price << " | "
              << items[i].quantity << endl;
     }
 }
@@ -61,10 +62,10 @@ int main() {
     cout << "\nTotal Price: " << getTotal(items) << endl;
 
     int lowest = getLowestIndex(items);
-    cout << "Lowest Priced Item: "
-         << items[lowest].code << " "
-         << items[lowest].description << " "
-         << items[lowest].price << " "
+    cout << "\nLowest Priced Item:\n";
+    cout << items[lowest].code << " | "
+         << items[lowest].description << " | "
+         << items[lowest].price << " | "
          << items[lowest].quantity << endl;
 
     return 0;
