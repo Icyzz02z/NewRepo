@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+const int MAX_ITEMS = 5;
+
+struct GroceryItem {
+    string code;
+    string description;
+    float price;
+    int quantity;
+};
+
+void inputItems(GroceryItem items[]) {
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        cout << "\nItem " << i + 1 << ":\n";
+        cout << "Code: ";
+        cin >> items[i].code;
+        cout << "Description: ";
+        cin >> items[i].description;
+        cout << "Price: ";
+        cin >> items[i].price;
+        cout << "Quantity: ";
+        cin >> items[i].quantity;
+    }
+}
+
+void showItems(GroceryItem items[]) {
+    cout << "\nItems Entered:\n";
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        cout << items[i].code << " "
+             << items[i].description << " "
+             << items[i].price << " "
+             << items[i].quantity << endl;
+    }
+}
+
+float getTotal(GroceryItem items[]) {
+    float total = 0;
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        total += items[i].price * items[i].quantity;
+    }
+    return total;
+}
+
+int getLowestIndex(GroceryItem items[]) {
+    int lowest = 0;
+    for (int i = 1; i < MAX_ITEMS; i++) {
+        if (items[i].price < items[lowest].price) {
+            lowest = i;
+        }
+    }
+    return lowest;
+}
+
+int main() {
+    GroceryItem items[MAX_ITEMS];
+
+    inputItems(items);
+    showItems(items);
+
+    cout << "\nTotal Price: " << getTotal(items) << endl;
+
+    int lowest = getLowestIndex(items);
+    cout << "Lowest Priced Item: "
+         << items[lowest].code << " "
+         << items[lowest].description << " "
+         << items[lowest].price << " "
+         << items[lowest].quantity << endl;
+
+    return 0;
+}
