@@ -1,0 +1,30 @@
+public class StudentGrades {
+    public static void main(String[] args) {
+        // Declare and initialize a 2D array for student names and grades
+        Object[][] studentArr = {
+            {"peter", 75, 77},
+            {"clark", 78, 80},
+            {"logan", 82, 84}
+        };
+
+        // Display header
+        System.out.println("STUDENT GRADES");
+        System.out.println("--------------");
+
+        // Loop through each student
+        for (int i = 0; i < studentArr.length; i++) {
+            String name = (String) studentArr[i][0];
+            int grade1 = (int) studentArr[i][1];
+            int grade2 = (int) studentArr[i][2];
+
+            // Compute average
+            double average = (grade1 + grade2) / 2.0;
+
+            // Display result
+            System.out.println("Name: " + name);
+            System.out.println("Grades: " + grade1 + ", " + grade2);
+            System.out.println("Average: " + average);
+            System.out.println(); // blank line for spacing
+        }
+    }
+}
